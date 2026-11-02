@@ -244,7 +244,7 @@ package fpnew_pkg;
     Width:         64,
     EnableVectors: 1'b1,
     EnableNanBox:  1'b1,
-    FpFmtMask:     5'b11101,
+    FpFmtMask:     5'b11111,
     IntFmtMask:    4'b1111
   };
 
@@ -252,7 +252,7 @@ package fpnew_pkg;
     Width:         32,
     EnableVectors: 1'b1,
     EnableNanBox:  1'b1,
-    FpFmtMask:     5'b10101,
+    FpFmtMask:     5'b10111,
     IntFmtMask:    4'b1110
   };
 

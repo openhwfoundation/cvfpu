@@ -355,7 +355,7 @@ The configuration  `pipe_config_t` is an enumeration of type `logic [1:0]` holdi
 
 #### `Division and Square-Root Unit Selection`
 The `DivSqrtSel` parameter is used to choose between the supported DivSqrt units.
-No unit supports FP8: elaboration fails if FP8 is enabled in a `DIVSQRT` operation group that is not `DISABLED`.
+No unit supports FP8: a warning is issued at elaboration if FP8 is enabled with `DivSqrtSel = THMULTI`.
 It is of type `divsqrt_unit_t`, which is defined as:
 ```SystemVerilog
 typedef enum logic[1:0] {

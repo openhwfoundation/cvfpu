@@ -73,8 +73,8 @@ module fpnew_opgroup_multifmt_slice #(
       $fatal(1, "T-Head-based DivSqrt unit supported only in FP32-only configurations. \
 Set DivSqrtSel = THMULTI to use a multi-format divider");
     end else if ((DivSqrtSel == fpnew_pkg::THMULTI) && (FpFmtConfig[3] == 1'b1)) begin
-      $fatal(1, "No DivSqrt unit supports FP8 (DivSqrtSel = THMULTI covers FP64, FP32, FP16 and FP16ALT). \
-Disable FP8 or set the DIVSQRT operation group to DISABLED.");
+      $warning("The DivSqrt unit of C910 (instantiated by DivSqrtSel = THMULTI) does not support \
+FP8. No DivSqrt unit supports div/sqrt operations on FP8.");
     end
   end
 
