@@ -37,7 +37,7 @@ For more in-depth explanations on how to configure the unit and the layout of th
 |------------------|------------------------------------------------------------------------------------------------------------------------------|
 | `Features`       | Specifies the features of the FPU, such as the set of supported formats and operations.                                      |
 | `Implementation` | Allows to control how the above features are implemented, such as the number of pipeline stages and architecture of subunits |
-| `DivSqrtSel`     | Chooses among the three supported DivSqrt units                                                                              |
+| `DivSqrtSel`     | Chooses between the two supported DivSqrt units                                                                              |
 | `TagType`        | The SystemVerilog data type of the operation tag                                                                             |
 | `TrueSIMDClass`  | If enabled, the result of a classify operation in vectorial mode will be RISC-V compliant if each output has at least 10 bits|
 | `EnableSIMDMask` | Enable the RISC-V floating-point status flags masking of inactive vectorial lanes. When disabled, `simd_mask_i` is inactive  |
@@ -354,11 +354,11 @@ The configuration  `pipe_config_t` is an enumeration of type `logic [1:0]` holdi
 | `DISTRIBUTED` | Registers are evenly distributed to `INSIDE`, `BEFORE`, and `AFTER` (if no `INSIDE`, all `BEFORE`)   |
 
 #### `Division and Square-Root Unit Selection`
-The `DivSqrtSel` parameter is used to choose among the support DivSqrt units.
+The `DivSqrtSel` parameter is used to choose between the supported DivSqrt units.
+No unit supports FP8: a warning is issued at elaboration if FP8 is enabled with `DivSqrtSel = THMULTI`.
 It is of type `divsqrt_unit_t`, which is defined as:
 ```SystemVerilog
 typedef enum logic[1:0] {
-  PULP,    // "PULP" instantiates the PULP DivSqrt unit supports FP64, FP32, FP16, FP16ALT, FP8 and SIMD operations
   TH32,    // "TH32" instantiates the E906 DivSqrt unit supports only FP32 (no SIMD support)
   THMULTI  // "THMULTI" instantiates the C910 DivSqrt unit supports FP64, FP32, FP16, FP16ALT and SIMD operations
 } divsqrt_unit_t;

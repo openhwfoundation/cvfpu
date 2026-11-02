@@ -22,9 +22,9 @@ Multiple integer formats with arbitrary number of bits (as source or destionatio
 - Addition/Subtraction
 - Multiplication
 - Fused multiply-add in four flavours (`fmadd`, `fmsub`, `fnmadd`, `fnmsub`)
-- Division<sup>1,2</sup>
-- Square root<sup>1,2</sup>
-- Minimum/Maximum<sup>3</sup>
+- Division<sup>1</sup>
+- Square root<sup>1</sup>
+- Minimum/Maximum<sup>2</sup>
 - Comparisons
 - Sign-Injections (`copy`, `abs`, `negate`, `copySign` etc.)
 - Conversions among all supported FP formats
@@ -38,9 +38,8 @@ E.g.: Support for double-precision (64bit) operations and two simultaneous singl
 
 It is also possible to generate only a subset of operations if e.g. divisions are not needed.
 
-<sup>1</sup>Some compliance issues with IEEE 754-2008 are currently known to exist for the PULP DivSqrt unit (Rounding mismatches have been reported in GitHub issues. This can lead to results being off by 1ulp, and the inexact flag not being properly raised in these cases as well)<br>
-<sup>2</sup>Two DivSqrt units are supported: the multi-format PULP DivSqrt unit and a 32-bit unit integrated from the T-Head OpenE906. The `PulpDivsqrt` parameter can be set to 1 or 0 to select the former or the latter unit, respectively.<br>
-<sup>3</sup>Implementing IEEE 754-201x `minimumNumber` and `maximumNumber`, respectively
+<sup>1</sup>Two DivSqrt units are supported, selected by the `DivSqrtSel` parameter: `THMULTI`, a multi-format unit (FP64, FP32, FP16, FP16ALT, packed-SIMD) integrated from the T-Head OpenC910, and `TH32`, an FP32-only unit integrated from the T-Head OpenE906. FP8 division and square root are not supported.<br>
+<sup>2</sup>Implementing IEEE 754-201x `minimumNumber` and `maximumNumber`, respectively
 
 ### Rounding modes
 All IEEE 754-2008 rounding modes are supported, namely
@@ -64,13 +63,12 @@ All IEEE 754-2008 status flags are supported, namely
 
 FPnew currently depends on the following:
 - `lzc` and `rr_arb_tree` from the `common_cells` repository (https://github.com/pulp-platform/common_cells.git)
-- optional: Divider and square-root unit from the `fpu-div-sqrt-mvp` repository (https://github.com/pulp-platform/fpu_div_sqrt_mvp.git)
 
-These two repositories are included in the source code directory as git submodules, use
+This repository is included in the source code directory as a git submodule, use
 ```bash
 git submodule update --init --recursive
 ```
-if you want to load these dependencies there.
+if you want to load this dependency there.
 
 Consider using [Bender](https://github.com/fabianschuiki/bender.git) for managing dependencies in your projects. FPnew comes with Bender support!
 

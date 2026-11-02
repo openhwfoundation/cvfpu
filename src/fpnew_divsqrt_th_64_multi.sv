@@ -193,6 +193,15 @@ module fpnew_divsqrt_th_64_multi #(
     $fatal(1, "DivSqrt THMULTI: Unsupported WIDTH (the supported width are 64, 32, 16)");
   end
 
+`ifndef SYNTHESIS
+  // FP8 falls into the default branch above and would be silently computed in the widest format.
+  if (FpFmtConfig[fpnew_pkg::FP8]) begin : gen_fp8_unsupported_check
+    assert property (@(posedge clk_i) disable iff (!rst_ni)
+                     !(in_valid_i && in_ready_o && (dst_fmt_i == fpnew_pkg::FP8)))
+      else $error("DivSqrt THMULTI: FP8 operation received, which this unit does not support");
+  end
+`endif
+
   // ------------
   // Control FSM
   // ------------
