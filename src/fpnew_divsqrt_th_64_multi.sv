@@ -330,6 +330,42 @@ module fpnew_divsqrt_th_64_multi #(
   `FFL(srcf0_q, operands_q[0], op_starting, '0)
   `FFL(srcf1_q, operands_q[1], op_starting, '0)
 
+  // Vectorial operands arrive as packed elements: the opgroup slice extracts
+  // merged-lane operands as overlapping 64-bit windows, so for narrow formats
+  // the upper half can hold a neighbouring element and cannot be pre-boxed
+  // upstream. The C910 expects 1-extended (NaN-boxed) narrow operands.
+  logic [63:0] srcf0_boxed, srcf1_boxed;
+
+  if (WIDTH == 64) begin : gen_operand_box
+    always_comb begin : nan_box_inputs
+      if (divsqrt_fmt_q == 4'b1000) begin // 64-bit
+        srcf0_boxed = srcf0_q;
+        srcf1_boxed = srcf1_q;
+      end else if (divsqrt_fmt_q == 4'b0100) begin // 32-bit
+        srcf0_boxed = {32'hFFFF_FFFF, srcf0_q[31:0]};
+        srcf1_boxed = {32'hFFFF_FFFF, srcf1_q[31:0]};
+      end else begin // 16-bit
+        srcf0_boxed = {{48{1'b1}}, srcf0_q[15:0]};
+        srcf1_boxed = {{48{1'b1}}, srcf1_q[15:0]};
+      end
+    end
+  end else if (WIDTH == 32) begin : gen_operand_box
+    always_comb begin : nan_box_inputs
+      if (divsqrt_fmt_q == 4'b0100) begin // 32-bit
+        srcf0_boxed = {32'hFFFF_FFFF, srcf0_q};
+        srcf1_boxed = {32'hFFFF_FFFF, srcf1_q};
+      end else begin // 16-bit
+        srcf0_boxed = {{48{1'b1}}, srcf0_q[15:0]};
+        srcf1_boxed = {{48{1'b1}}, srcf1_q[15:0]};
+      end
+    end
+  end else begin : gen_operand_box
+    always_comb begin : nan_box_inputs
+      srcf0_boxed = {{48{1'b1}}, srcf0_q[15:0]};
+      srcf1_boxed = {{48{1'b1}}, srcf1_q[15:0]};
+    end
+  end
+
   assign div_op = (divsqrt_op_q == fpnew_pkg::DIV) ? 1'b1 : 1'b0;
   assign sqrt_op = (divsqrt_op_q != fpnew_pkg::DIV) ? 1'b1 : 1'b0;
   
@@ -354,8 +390,8 @@ module fpnew_divsqrt_th_64_multi #(
     .dp_vfdsu_ex1_pipex_iid         ( '0                        ), // Don't care, used in C910
     .dp_vfdsu_ex1_pipex_imm0        ( 3'b111                    ), // Round mode, set to 3'b111 to select vfpu_yy_xx_rm signal
     .dp_vfdsu_ex1_pipex_sel         ( op_sel                    ), // 3. Select operands, start operation
-    .dp_vfdsu_ex1_pipex_srcf0       ( {{(64-WIDTH){1'b1}}, srcf0_q} ), // Input for operand 0
-    .dp_vfdsu_ex1_pipex_srcf1       ( {{(64-WIDTH){1'b1}}, srcf1_q} ), // Input for operand 1
+    .dp_vfdsu_ex1_pipex_srcf0       ( result_vec_op_q ? srcf0_boxed : {{(64-WIDTH){1'b1}}, srcf0_q} ), // Input for operand 0
+    .dp_vfdsu_ex1_pipex_srcf1       ( result_vec_op_q ? srcf1_boxed : {{(64-WIDTH){1'b1}}, srcf1_q} ), // Input for operand 1
     .dp_vfdsu_fdiv_gateclk_issue    ( 1'b1                      ), // Local clock enable (same as above)
     .dp_vfdsu_idu_fdiv_issue        ( op_starting               ), // 1. Issue fdiv (FSM in ctrl)
     .forever_cpuclk                 ( clk_i                     ), // Clock input
