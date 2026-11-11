@@ -128,9 +128,10 @@ package fpnew_pkg;
   // DIVSQRT UNIT
   // -------------
   typedef enum logic[1:0] {
-    PULP,    // "PULP" instantiates the PULP DivSqrt unit supports FP64, FP32, FP16, FP16ALT, FP8 and SIMD operations
-    TH32,    // "TH32" instantiates the E906 DivSqrt unit supports only FP32 (no SIMD support)
-    THMULTI  // "THMULTI" instantiates the C910 DivSqrt unit supports FP64, FP32, FP16, FP16ALT and SIMD operations
+    RSRVD0  = 2'd0, // Reserved
+    TH32    = 2'd1, // "TH32" instantiates the E906 DivSqrt unit supports only FP32 (no SIMD support)
+    THMULTI = 2'd2, // "THMULTI" instantiates the C910 DivSqrt unit supports FP64, FP32, FP16, FP16ALT and SIMD operations
+    RSRVD3  = 2'd3  // Reserved
   } divsqrt_unit_t;
 
   // -------------------

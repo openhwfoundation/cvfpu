@@ -8,6 +8,14 @@ In this sense, we interpret the "Public API" of a hardware module as its port/pa
 Versions of the IP in the same major relase are "pin-compatible" with each other. Minor relases are permitted to add new parameters as long as their default bindings ensure backwards compatibility.
 
 
+## [Unreleased]
+
+### Removed
+- PULP DivSqrt unit: `PULP` value of `divsqrt_unit_t`, `fpnew_divsqrt_multi` and the `fpu_div_sqrt_mvp` dependency. `THMULTI` and `TH32` remain. FP8 division and square root are no longer available in any configuration
+
+### Changed
+- `divsqrt_unit_t`: `TH32` and `THMULTI` keep their encodings (1 and 2); encodings 0 (formerly `PULP`) and 3 are reserved and stop elaboration with an error
+
 ## [0.8.0] - 2023-06-02
 
 ### Added
