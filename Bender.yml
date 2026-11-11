@@ -6,7 +6,7 @@ package:
   authors: ["Stefan Mach <smach@iis.ee.ethz.ch>"]
 
 dependencies:
-  common_cells: {git: "https://github.com/pulp-platform/common_cells.git",         version: 1.21.0}
+  common_cells: {git: "https://github.com/pulp-platform/common_cells.git",         version: 1.40.0}
 
 sources:
   - src/fpnew_pkg.sv
