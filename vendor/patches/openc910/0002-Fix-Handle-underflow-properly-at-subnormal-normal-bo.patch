@@ -1,16 +1,13 @@
-From 2412caed0dfad31332878410e78754880654c60b Mon Sep 17 00:00:00 2001
+From f322dd95b81d9a9e4df40d72bea84ce3dccf009c Mon Sep 17 00:00:00 2001
 From: Ihsane TAHIR <ihsane.tahir@cea.fr>
 Date: Fri, 29 Aug 2025 13:51:02 +0200
 Subject: [PATCH] Fix: Handle underflow properly at subnormal/normal boundary
 
----
- .../openc910/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/vendor/openc910/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v b/vendor/openc910/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
+diff --git a/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v b/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
 index 681b77a..fe56ca0 100644
---- a/vendor/openc910/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
-+++ b/vendor/openc910/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
+--- a/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
++++ b/C910_RTL_FACTORY/gen_rtl/vfdsu/rtl/ct_vfdsu_pack.v
 @@ -404,7 +404,7 @@ assign ex4_rst_inf[63:0]       = (vfdsu_ex4_double) ? ex4_doub_rst_inf[63:0] :
                                    vfdsu_ex4_half    ? ex4_half_rst_inf[63:0] : ex4_bfloat_rst_inf[63:0];
  
@@ -20,6 +17,3 @@ index 681b77a..fe56ca0 100644
                                 && vfdsu_ex4_nx;
  assign ex4_cor_nx            =  vfdsu_ex4_nx 
                                  || vfdsu_ex4_of 
--- 
-2.17.2
-
