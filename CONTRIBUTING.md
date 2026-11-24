@@ -23,8 +23,8 @@ In most cases a contribution should be made on a _develop_ branch.<br>
 ## The Mechanics
 1. [Fork](https://help.github.com/articles/fork-a-repo/) the [cvfpu](https://github.com/openhwfoundation/cvfpu) repository
 2. Clone repository: `git clone https://github.com/[your_github_username]/cvfpu`
-3. Checkout the correct branch reflecting the nature of your contribution.  Nearly all contributions should target a core's _dev_ branch.  Hotfixes can target _master_.
-4. Create your feature branch: `git checkout -b <my_branch>.`<br> Please uniquify your branch name.  See the [Git Cheats](https://github.com/openhwfoundation/core-v-verif/blob/master/GitCheats.md) for a useful nominclature.
+3. Check out `develop` as the base for normal contributions and target pull requests at `develop`. Hotfixes can target `master`.
+4. Create your feature branch: `git checkout -b <my_branch>`.<br> Please uniquify your branch name.  See the [Git Cheats](https://github.com/openhwfoundation/core-v-verif/blob/master/GitCheats.md) for a useful nomenclature.
 6. Commit your changes: `git commit -m 'Add some feature' --signoff`
 7. Push feature branch: `git push origin <my_branch>`
 8. Submit a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
