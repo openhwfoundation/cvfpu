@@ -93,11 +93,11 @@ package fpnew_pkg;
       INT64: return 64;
       default: begin
         // pragma translate_off
-        $fatal(1, "Invalid INT format supplied");
+        if (!$isunknown(ifmt)) $fatal(1, "Invalid INT format supplied");
         // pragma translate_on
         // just return any integer to avoid any latches
         // hopefully this error is caught by simulation
-        return INT8;
+        return 8;
       end
     endcase
   endfunction
