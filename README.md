@@ -1,15 +1,15 @@
-# FPnew - New Floating-Point Unit with Transprecision Capabilities
+# CVFPU - the CORE-V Floating-Point Unit with Transprecision Capabilities
 
 Parametric floating-point unit with support for standard RISC-V formats and operations as well as transprecision formats, written in SystemVerilog.
 
-Maintainers: Pasquale Davide Schiavone <davide@openhwgroup.org>, Pascal Gouedo <pascal.gouedo@dolphin.fr><br>
-Authors: Stefan Mach <smach@iis.ee.ethz.ch>, Luca Bertaccini <lbertaccini@iis.ee.ethz.ch>
+Originally developed by Stefan Mach <smach@iis.ee.ethz.ch> and Luca Bertaccini <lbertaccini@iis.ee.ethz.ch> as the FPnew project.<br>
+Later transfered to the OpenHW Foundation and rebranded as CVFPU.<br>
+Past maintainers: Pasquale Davide Schiavone, Pascal Gouedo.
 
 ## Features
 
-The FPU is a parametric design that allows generating FP hardware units for various use cases.
-Even though mainly designed for use in RISC-V processors, the FPU or its sub-blocks can easily be utilized in other environments.
-Our design aims to be compliant with IEEE 754-2008 and provides the following features:
+The CVFPU is a parametric design that allows generating FP hardware units for various use cases.
+CVFPU is compliant with IEEE 754-2008 and provides the following features:
 
 ### Formats
 Any IEEE 754-2008 style binary floating-point format can be supported, including single-, double-, quad- and half-precision (`binary32`, `binary64`, `binary128`, `binary16`).
@@ -61,7 +61,7 @@ All IEEE 754-2008 status flags are supported, namely
 
 ### Dependencies
 
-FPnew currently depends on the following:
+CVFPU currently depends on the following:
 - `lzc` and `rr_arb_tree` from the `common_cells` repository (https://github.com/pulp-platform/common_cells.git)
 
 This repository is included in the source code directory as a git submodule, use
@@ -70,7 +70,8 @@ git submodule update --init --recursive
 ```
 if you want to load this dependency there.
 
-Consider using [Bender](https://github.com/fabianschuiki/bender.git) for managing dependencies in your projects. FPnew comes with Bender support!
+Consider using [Bender](https://github.com/fabianschuiki/bender.git) for managing dependencies in your projects.
+CVFPU comes with Bender support!
 
 ### Usage
 
@@ -115,16 +116,7 @@ fpnew_top #(
 
 ### Documentation
 
-More in-depth documentation on the FPnew configuration, interfaces and architecture is provided in [`docs/README.md`](docs/README.md).
-
-### Issues and Contributing
-
-In case you find any issues with FPnew that have not been reported yet, don't hesitate to open a new [issue](https://github.com/pulp-platform/fpnew/issues) here on Github.
-Please, don't use the issue tracker for support questions.
-Instead, consider contacting the maintainers or consulting the [PULP forums](https://pulp-platform.org/community/index.php).
-
-In case you would like to contribute to the project, please refer to the contributing guidelines in [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) before opening a pull request.
-
+More in-depth documentation on the CVFPU configuration, interfaces and architecture is provided in [`docs/README.md`](docs/README.md).
 
 ### Repository Structure
 
@@ -138,13 +130,14 @@ Furthermore, this repository tries to adhere to [SemVer](https://semver.org/), a
 
 ## Licensing
 
-FPnew is released under the *SolderPad Hardware License*, which is a permissive license based on Apache 2.0. Please refer to the [SolderPad license file](LICENSE.solderpad) for further information.
+CVFPU is released under the *SolderPad Hardware License*, which is a permissive license based on Apache 2.0. Please refer to the [SolderPad license file](LICENSE.solderpad) for further information.
 
-The T-Head E906 DivSqrt unit, integrated into FPnew in [`vendor/opene906`](vendor/opene906), is reseased under the *Apache License, Version 2.0*. Please refer to the [Apache 2.0 license file](LICENSE.apache) for further information.
+The T-Head E906 DivSqrt unit, integrated into CVFPU in [`vendor/opene906`](vendor/opene906), is reseased under the *Apache License, Version 2.0*. Please refer to the [Apache 2.0 license file](LICENSE.apache) for further information.
 
 ## Publication
 
-If you use FPnew in your work, you can cite us:
+If you use CVFPU in your work, please cite the OpenHW Foundation and the PULP-Platform team.
+Citations for the 'FPnew' project are below:
 
 <details>
 <summary>FPnew Publication</summary>
@@ -169,7 +162,7 @@ If you use FPnew in your work, you can cite us:
 
 ## Acknowledgement
 
-This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 732631.
+The 'FPnew' project received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 732631.
 
 For further information, visit [oprecomp.eu](http://oprecomp.eu).
 

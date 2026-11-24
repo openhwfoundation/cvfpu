@@ -1,6 +1,11 @@
-# FPnew Documentation
+# CVFPU Documentation
 
-FPnew is a parametric floating-point unit which supports standard RISC-V operations as well as transprecision formats, written in SystemVerilog.
+CVFPU is a parametric floating-point unit which supports standard RISC-V operations as well as transprecision formats, written in SystemVerilog.
+
+> [!NOTE]
+> This and other documents, as well as the RTL source code, reference 'FPnew'.
+> FPnew was the project name before this repository was transferred to the OpenHW Foundation.
+> For the purposes of this document, CVFPU and FPnew are synonymous.
 
 **Table of Contents**
 - [Top-Level Interface](#top-level-interface)
@@ -22,7 +27,7 @@ FPnew is a parametric floating-point unit which supports standard RISC-V operati
 ## Top-Level Interface
 
 The top-level module of the FPU is `fpnew_top` and its interface is further described in this section.
-FPnew uses a synchronous interface using handshaking to transfer data into and out of the FPU.
+CVFPU uses a synchronous interface using handshaking to transfer data into and out of the FPU.
 
 All array types are packed due to poor support of unpacked arrays in some EDA tools.
 SystemVerilog `interface`s are not used due to poor support in some EDA tools.
@@ -183,7 +188,7 @@ Narrow integer output values from the FPU are sign-extended, even if unsigned.
 
 ### Handshake Interface
 
-Both the input and output side of FPnew feature a `valid`/`ready` handshake interface which controls the flow of data into and out of the FPU.
+Both the input and output side of CVFPU feature a `valid`/`ready` handshake interface which controls the flow of data into and out of the FPU.
 The handshaking protocol is similar to ones used in common protocols such as AXI:
 
 - An asserted `valid` singnals that data on the corresponding interface is valid and stable.
@@ -199,7 +204,7 @@ The handshaking protocol is similar to ones used in common protocols such as AXI
 Operation tags are metadata accompanying an operation and can be used to link results back to the oprerations that produced them.
 Tags traverse the FPU without being modified, but always stay in sync with the operation they were issued with.
 
-Tags are an optional feature of FPnew and can be controlled by setting the `TagType` parameter as needed (usually a packed vector of `logic`, but can be any type).
+Tags are an optional feature of CVFPU and can be controlled by setting the `TagType` parameter as needed (usually a packed vector of `logic`, but can be any type).
 In order to disable the use of tags, set `TagType` to `logic` (the default value), and bind the `tag_i` port to a static value.
 Furthermore ensure that your synthesis tool removes static registers.
 
@@ -391,22 +396,22 @@ No other changes should be necessary to the package or other source files of the
 
 ## Architecture
 
-The exact architecture of FPnew depends on the configuration through parameters.
+The exact architecture of CVFPU depends on the configuration through parameters.
 The main architectural traits as well as the effect of some parameters are described henceforth.
 
-The design philosophy begind FPnew is that the "plumbing" of the architecture is quite regular and generic and the actual operations that handle the data are located at the lowest level.
+The design philosophy begind CVFPU is that the "plumbing" of the architecture is quite regular and generic and the actual operations that handle the data are located at the lowest level.
 Handshaking is used to pass data through the hierarchy levels.
 As such, very fine-grained clock-gating can be applied to silence all parts of the architecture that are not actively contributing to useful work, significantly increasing energy efficiency.
 
 
 ### Top-Level
 
-The topmost level of hierarchy in FPnew is host to several operation group blocks as well as an output arbiter.
-The *operation group* is the highest level of grouping within FPnew and signifies a class of operations that can usually be executed on a single hardware unit - such as additions and multiplications usually being mapped to an FMA unit.
+The topmost level of hierarchy in CVFPU is host to several operation group blocks as well as an output arbiter.
+The *operation group* is the highest level of grouping within CVFPU and signifies a class of operations that can usually be executed on a single hardware unit - such as additions and multiplications usually being mapped to an FMA unit.
 
-![FPnew](fig/top_block.png)
+![CVFPU](fig/top_block.png)
 
-There are currently four operation groups in FPnew which are enumerated in `opgroup_e` as outlined in the following table:
+There are currently four operation groups in CVFPU which are enumerated in `opgroup_e` as outlined in the following table:
 
 | Enumerator |                  Description                  |         Associated Operations           |
 |------------|-----------------------------------------------|-----------------------------------------|
@@ -415,7 +420,7 @@ There are currently four operation groups in FPnew which are enumerated in `opgr
 | `NONCOMP`  | Non-Computational Operations like Comparisons | `SGNJ`, `MINMAX`, `CMP`, `CLASS`        |
 | `CONV`     | Conversions                                   | `F2I`, `I2F`, `F2F`, `CPKAB`, `CPKCD`   |
 
-Most architectural decisions for FPnew are made at very fine granularity.
+Most architectural decisions for CVFPU are made at very fine granularity.
 The big exception to this is the generation of vectorial hardware which is decided at top level through the `EnableVectors` parameter.
 
 
@@ -426,7 +431,7 @@ A unit type is selected for each format according to the settings in the `Implem
 Formats can either be implemented in a format-specific `PARALLEL` slice, or a multi-format `MERGED` slice.
 Both `PARALLEL` and `MERGED` slices can co-exist in case a subset of formats is assigned to both of the two options.
 
-![FPnew](fig/opgrp_block.png)
+![CVFPU](fig/opgrp_block.png)
 
 
 ### Format-Specific Slices (`PARALLEL`)
@@ -437,7 +442,7 @@ Results from all lanes are collected and assembled at the output of the slice.
 
 Implementing units as parallel slices usually yields best format-specific latency, however costs more in terms of area.
 
-![FPnew](fig/slice_block.png)
+![CVFPU](fig/slice_block.png)
 
 
 ### Multi-Format Slices (`MERGED`)
@@ -451,7 +456,7 @@ Implementing units as merged slices usually yields best total area, however cost
 
 When the `ADDMUL` block is implemented using the `MERGED` implementation, multi-format FMA (multiplication done in `src_format`, accumulation in `dst_format`) is automatically supported among all formats using `MERGED`.
 
-![FPnew](fig/multislice_block.png)
+![CVFPU](fig/multislice_block.png)
 
 
 ### Pipelining
